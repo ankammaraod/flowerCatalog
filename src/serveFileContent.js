@@ -14,6 +14,9 @@ const serverFileContent = (request, response, path) => {
   const { uri } = request;
   let fileName = path + uri;
 
+  if (uri === '/') {
+    fileName = path + uri + 'flowerCatlog.html';
+  }
   if (!fs.existsSync(fileName)) {
     return false;
   }
