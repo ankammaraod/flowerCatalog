@@ -1,5 +1,3 @@
-
-
 class Comments {
   constructor() {
     this.comments = [];
@@ -7,7 +5,7 @@ class Comments {
 
   addComment(date, name, comment) {
 
-    this.comments.push({ date, name, comment: comment.replace('+', ' ') });
+    this.comments.unshift({ date, name, comment: comment.replaceAll('+', ' ') });
   }
 
   formatComments() {
