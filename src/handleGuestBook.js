@@ -29,7 +29,7 @@ const handleComment = (request, response, comments) => {
 const handleGuestBook = (request, response, path, comments) => {
   console.log(comments);
   const { uri } = request;
-  if (uri === '/html/comment') {
+  if (uri === '/comment') {
     handleComment(request, response, comments);
     return true;
   }

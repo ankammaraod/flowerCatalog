@@ -14,7 +14,6 @@ const serverFileContent = (request, response, path) => {
   const { uri } = request;
   let fileName = path + uri;
 
-
   if (!fs.existsSync(fileName)) {
     return false;
   }
