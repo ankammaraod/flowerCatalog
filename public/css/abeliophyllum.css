@@ -1,0 +1,18 @@
+h1 {
+  text-align: center;
+  padding: 3px;
+  color: orange;
+  border-bottom: 1px solid black;
+}
+
+.page-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 50px;
+}
