@@ -11,7 +11,7 @@ class Comments {
   formatComments() {
     let formattedComments = '';
     this.comments.forEach(comment => {
-      formattedComments += `${comment.date}_${comment.name}_${comment.comment}\n`
+      formattedComments += `${comment.date}  ${comment.name}  ${comment.comment}\n`
     });
     return formattedComments;
   }
@@ -29,7 +29,7 @@ const handleComment = (request, response, comments) => {
 const handleGuestBook = (request, response, path, comments) => {
   console.log(comments);
   const { uri } = request;
-  if (uri === '/comment') {
+  if (uri === '/html/comment') {
     handleComment(request, response, comments);
     return true;
   }
