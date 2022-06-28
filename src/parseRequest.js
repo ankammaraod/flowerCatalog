@@ -8,7 +8,8 @@ const parseUri = (rawUri) => {
   if (queryString) {
     queryString.split('&').forEach(paramString => {
       const [param, value] = paramString.split('=');
-      queryParams[param] = value;
+      const parsedValue = value.replaceAll('+', ' ').replaceAll('%0D%0A', '\r\n')
+      queryParams[param] = parsedValue;
     });
   }
   return { uri, queryParams };
