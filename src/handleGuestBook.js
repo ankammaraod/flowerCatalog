@@ -12,6 +12,7 @@ const handleComment = (request, response) => {
     redirectionToDisplayComments(request, response);
     return;
   }
+
   const date = new Date();
   const comments = JSON.parse(fs.readFileSync('./public/comments.json', 'utf-8'));
 
@@ -31,7 +32,6 @@ const formatComments = (comments) => {
   comments.forEach(comment => {
     htmlComments += formatItem(comment);
   });
-
   return `<ul>${htmlComments}</ul>`
 };
 
