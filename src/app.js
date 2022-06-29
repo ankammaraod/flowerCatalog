@@ -14,14 +14,18 @@ const handle = (handlers) => {
   }
 };
 
-const initializePathsAndHandlers = () => {
-  const commentsPath = './guest-book/comments.json';
-  const templatePath = './public/guestBook.html'
-  const guestBook = JSON.parse(fs.readFileSync(commentsPath, 'utf-8'));
+const readData = (path) => {
+  return fs.readFileSync(path, 'utf-8');
+};
+
+const initializePathsAndHandlers = (commentsPath, templatePath) => {
+
+  const guestBook = JSON.parse(readData(commentsPath));
+  const template = readData(templatePath);
 
   const handlers = [
+    handleGuestBook(guestBook, template, commentsPath),
     serveFileContent('./public'),
-    handleGuestBook(guestBook, commentsPath, templatePath),
     fileNotFoundHandler
   ];
 

@@ -1,37 +1,23 @@
 const fs = require("fs");
 
 
-const redirectionToDisplayComments = (request, response) => {
+const redirectionToGuestBook = (request, response) => {
   response.statusCode = 302;
   response.setHeader('Location', '/guest-book');
   response.end('');
 };
 
-const formatComments = (comments) => {
-  let htmlComments = '';
-  comments.forEach(comment => {
-    htmlComments += formatItem(comment);
-  });
-  return `<ul>${htmlComments}</ul>`
-};
+const html = (tag, content) => {
+  return `<${tag}>${content}</${tag}>`
+}
 
 const formatItem = (comment) => {
-  return `<li>${comment.date} | ${comment.name} | ${comment.comment}</li>`
+  return html('li', `${comment.date} | ${comment.name} | ${comment.comment}`);
 };
 
-const handleDisplayComments = (request, response) => {
-
-  const { guestBook, templatePath } = request;
-
-  const html = fs.readFileSync(templatePath, 'utf-8');
-
-  const formattedComments = formatComments(guestBook);
-
-  const pageContent = html.replaceAll('--comments--', formattedComments);
-
-  response.setHeader('content-type', 'text/html');
-  response.end(pageContent);
-  return true;
+const formatComments = (comments) => {
+  const htmlComments = comments.map(formatItem).join(' ');
+  return html('ul', htmlComments);
 };
 
 const getParams = (request, response) => {
@@ -43,6 +29,24 @@ const getParams = (request, response) => {
   return params;
 };
 
+const writeData = (path, content) => {
+  fs.writeFileSync(path, JSON.stringify(content, 'utf-8'));
+};
+
+const handleDisplayComments = (request, response) => {
+
+  const { guestBook, template } = request;
+
+  const formattedComments = formatComments(guestBook);
+
+  const pageContent = template.replaceAll('--comments--', formattedComments);
+
+  response.setHeader('content-type', 'text/html');
+  response.end(pageContent);
+  return true;
+};
+
+
 const handleComment = (request, response) => {
 
   const { name, comment } = getParams(request, response);
@@ -51,19 +55,19 @@ const handleComment = (request, response) => {
   const date = new Date().toLocaleString();
   guestBook.unshift({ date, name, comment });
 
-  fs.writeFileSync(commentsPath, JSON.stringify(guestBook), 'utf-8');
+  writeData(commentsPath, guestBook);
 
-  redirectionToDisplayComments(request, response);
+  redirectionToGuestBook(request, response);
   return true;
 };
 
-const handleGuestBook = (guestBook, commentsPath, templatePath) => {
+const handleGuestBook = (guestBook, template, commentsPath) => {
   return (request, response) => {
     const { pathname } = request.url
 
     if (pathname === '/guest-book' && request.method === 'GET') {
       request.guestBook = guestBook;
-      request.templatePath = templatePath;
+      request.template = template;
       return handleDisplayComments(request, response);
     }
 
@@ -78,6 +82,3 @@ const handleGuestBook = (guestBook, commentsPath, templatePath) => {
 };
 
 module.exports = { handleGuestBook };
-
-//read function and write function
-//pass the template path and comments path from the closure 
