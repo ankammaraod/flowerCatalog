@@ -1,7 +1,7 @@
 const { fileNotFoundHandler } = require('./handlers/fileNotFoundHandler.js');
 const { serveFileContent } = require('./handlers/serveFileContent.js');
 const { handleGuestBook } = require('./handlers/handleGuestBook.js');
-const { handle } = require('./server/createRouter.js');
+const { createRouter } = require('./server/createRouter.js');
 const fs = require('fs');
 
 const readData = (path) => {
@@ -19,7 +19,7 @@ const initializePathsAndHandlers = (commentsPath, templatePath) => {
     fileNotFoundHandler
   ];
 
-  return handle(handlers);
+  return createRouter(handlers);
 };
 
 module.exports = { initializePathsAndHandlers };
