@@ -1,0 +1,4 @@
+./public/comments.json
+./server/myServer.js
+./server/parseRequest.js
+./server/response.js

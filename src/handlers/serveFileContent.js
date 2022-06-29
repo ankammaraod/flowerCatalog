@@ -1,13 +1,14 @@
 const fs = require('fs');
+const path = require('path');
 
 const contentTypes = {
-  jpeg: 'image/jpeg',
-  html: 'text/html'
+  '.jpeg': 'image/jpeg',
+  '.html': 'text/html'
 };
 
 const determineContentType = (fileName) => {
-  const filetype = fileName.slice(fileName.lastIndexOf('.') + 1);
-  return contentTypes[filetype] || 'text/plain';
+  const fileExtension = path.extname(fileName);
+  return contentTypes[fileExtension] || 'text/plain';
 };
 
 const serveFileContent = (path) => {
