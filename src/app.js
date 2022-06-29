@@ -14,8 +14,20 @@ const handle = (handlers) => {
   }
 };
 
-const guestBook = JSON.parse(fs.readFileSync('./public/comments.json', 'utf-8'));
+const initializePathsAndHandlers = () => {
+  const commentsPath = './public/comments.json';
+  const templatePath = './public/guestBook.html'
+  const guestBook = JSON.parse(fs.readFileSync(commentsPath, 'utf-8'));
 
-const handlers = [serveFileContent('./public'), handleGuestBook(guestBook), fileNotFoundHandler];
+  const handlers = [
+    serveFileContent('./public'),
+    handleGuestBook(guestBook, commentsPath, templatePath),
+    fileNotFoundHandler
+  ];
 
-module.exports = { handle, handlers };
+  return handle(handlers);
+};
+
+module.exports = { initializePathsAndHandlers };
+
+//pass the paths from command line
