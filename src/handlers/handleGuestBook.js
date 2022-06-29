@@ -61,7 +61,7 @@ const handleComment = (request, response) => {
   return true;
 };
 
-const handleGuestBook = (guestBook, template, commentsPath) => {
+const guestBookRouter = (guestBook, template, commentsPath) => {
   return (request, response) => {
     const { pathname } = request.url
 
@@ -81,4 +81,4 @@ const handleGuestBook = (guestBook, template, commentsPath) => {
   }
 };
 
-module.exports = { handleGuestBook };
+module.exports = { guestBookRouter };

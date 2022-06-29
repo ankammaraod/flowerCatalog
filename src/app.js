@@ -1,6 +1,6 @@
 const { fileNotFoundHandler } = require('./handlers/fileNotFoundHandler.js');
 const { serveFileContent } = require('./handlers/serveFileContent.js');
-const { handleGuestBook } = require('./handlers/handleGuestBook.js');
+const { guestBookRouter } = require('./handlers/handleGuestBook.js');
 const { createRouter } = require('./server/createRouter.js');
 const { logRequestHandler } = require('./handlers/logRequestHandler.js');
 const { urlHandler } = require('./handlers/urlHandler.js');
@@ -18,7 +18,7 @@ const initializePathsAndHandlers = (commentsPath, templatePath) => {
   const handlers = [
     urlHandler,
     logRequestHandler,
-    handleGuestBook(guestBook, template, commentsPath),
+    guestBookRouter(guestBook, template, commentsPath),
     serveFileContent('./public'),
     fileNotFoundHandler
   ];

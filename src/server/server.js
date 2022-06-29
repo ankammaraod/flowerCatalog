@@ -3,7 +3,6 @@ const { URL } = require('url');
 
 const startServer = (port, handler) => {
   const server = http.createServer((request, response) => {
-    request.port = port;
     handler(request, response);
   });
 

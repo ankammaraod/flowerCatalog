@@ -1,6 +1,5 @@
 const urlHandler = (request, response) => {
-  const { port } = request
-  request.url = new URL(`http://localhost:${port}${request.url}`);
+  request.url = new URL(request.url, 'http://' + request.headers.host);
   return false;
 };
 
