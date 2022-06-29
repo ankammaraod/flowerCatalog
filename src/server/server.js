@@ -3,10 +3,7 @@ const { URL } = require('url');
 
 const startServer = (port, handler) => {
   const server = http.createServer((request, response) => {
-
-    request.url = new URL(`http://localhost:${port}${request.url}`);
-
-    console.log(request.method, request.url.pathname);
+    request.port = port;
     handler(request, response);
   });
 
@@ -14,3 +11,5 @@ const startServer = (port, handler) => {
 };
 
 module.exports = { startServer };
+
+
