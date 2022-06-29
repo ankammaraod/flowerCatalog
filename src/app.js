@@ -15,7 +15,7 @@ const handle = (handlers) => {
 };
 
 const initializePathsAndHandlers = () => {
-  const commentsPath = './public/comments.json';
+  const commentsPath = './guest-book/comments.json';
   const templatePath = './public/guestBook.html'
   const guestBook = JSON.parse(fs.readFileSync(commentsPath, 'utf-8'));
 
