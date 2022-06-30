@@ -1,6 +1,5 @@
 const fs = require("fs");
 
-
 const redirectionToGuestBook = (request, response) => {
   response.statusCode = 302;
   response.setHeader('Location', '/guest-book');

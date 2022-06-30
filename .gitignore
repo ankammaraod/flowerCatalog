@@ -1,4 +1,4 @@
 ./guest-book/comments.json
-./server/myServer.js
+node_modules/
 ./server/parseRequest.js
 ./server/response.js

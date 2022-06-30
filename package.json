@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/ankammaraod/flowerCatalog/issues"
   },
-  "homepage": "https://github.com/ankammaraod/flowerCatalog#readme"
+  "homepage": "https://github.com/ankammaraod/flowerCatalog#readme",
+  "dependencies": {
+    "server": "github:ankammaraod/server"
+  }
 }
