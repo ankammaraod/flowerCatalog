@@ -3,6 +3,15 @@
 <head>
   <title>Flower Catalog Website</title>
   <link rel="stylesheet" href="./css/flowerCatlog.css">
+  <script>
+    const hide = () => {
+      const element = document.getElementById("jar");
+      element.style.visibility = 'hidden';
+      setTimeout(() => {
+        element.style.visibility = 'visible';
+      }, 2000);
+    }
+  </script>
 </head>
 
 <body>
@@ -20,7 +29,9 @@
           <li><a href="./abeliophyllum.html">Abeliophyllum</a></li>
           <li><a href="./ageratum.html">Ageratum</a></li>
         </ul>
-        <div class="animated-img"><img src="./images/animated-flower-image-0021.gif" alt="animated-flower-image-0021">
+        <div class="animated-img">
+          <img src=" ./images/animated-flower-image-0021.gif" alt="animated-flower-image-0021" id="jar"
+            onclick="hide()">
         </div>
 
         <a href="/guest-book">Guest Book</a>
