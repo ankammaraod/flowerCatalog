@@ -1,6 +1,6 @@
 const logRequestHandler = (request, response, next) => {
   console.log(request.method, request.url.pathname);
-  next(request, response, next);
+  next();
 };
 
 module.exports = { logRequestHandler };

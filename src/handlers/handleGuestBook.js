@@ -89,7 +89,7 @@ const guestBookRouter = (guestBook, template, commentsPath) => {
       });
       return;
     }
-    next(request, response, next);
+    next();
   }
 };
 

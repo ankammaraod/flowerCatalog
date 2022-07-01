@@ -22,11 +22,15 @@ const serveAsyncFileHandler = (path) => {
     }
 
     if (!fs.existsSync(fileName)) {
-      next(request, response, next);
+      next();
       return;
     }
 
     fs.readFile(fileName, (error, content) => {
+      if (error) {
+        next();
+        return;
+      }
       response.setHeader('content-type', determineContentType(fileName));
       response.end(content);
     });

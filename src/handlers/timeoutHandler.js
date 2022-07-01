@@ -7,7 +7,7 @@ const timeoutHandler = (request, response, next) => {
     }, 5000);
     return;
   }
-  next(request, response, next)
+  next()
 };
 
 module.exports = { timeoutHandler };

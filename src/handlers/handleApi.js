@@ -12,7 +12,7 @@ const handleApiRouter = (guestBook) => {
       handleGuestBookApi(request, response);
       return;
     }
-    next(request, response, next);
+    next();
   }
 };
 
