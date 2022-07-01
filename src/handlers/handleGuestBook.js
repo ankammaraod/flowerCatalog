@@ -19,13 +19,17 @@ const formatComments = (comments) => {
   return html('ul', htmlComments);
 };
 
-const getParams = (request, response) => {
-  const params = {};
-  for (const param of request.url.searchParams.entries()) {
+const parseData = (data, request) => {
+
+  const urlSearchParams = new URLSearchParams(data);
+  const params = urlSearchParams.entries();
+  const bodyParams = {}
+  for (const param of params) {
     const [key, value] = param;
-    params[key] = value;
+    bodyParams[key] = value;
   }
-  return params;
+  request.bodyParams = bodyParams;
+  return;
 };
 
 const writeData = (path, content) => {
@@ -48,7 +52,7 @@ const handleDisplayComments = (request, response) => {
 
 const handleComment = (request, response) => {
 
-  const { name, comment } = getParams(request, response);
+  const { name, comment } = request.bodyParams;
   const { guestBook, commentsPath } = request;
 
   const date = new Date().toLocaleString();
@@ -61,7 +65,7 @@ const handleComment = (request, response) => {
 };
 
 const guestBookRouter = (guestBook, template, commentsPath) => {
-  return (request, response) => {
+  return (request, response, next) => {
     const { pathname } = request.url
 
     if (pathname === '/guest-book' && request.method === 'GET') {
@@ -70,13 +74,22 @@ const guestBookRouter = (guestBook, template, commentsPath) => {
       return handleDisplayComments(request, response);
     }
 
-    if (pathname === '/add-comment' && request.method === 'GET') {
+    if (pathname === '/add-comment' && request.method === 'POST') {
       request.guestBook = guestBook;
       request.commentsPath = commentsPath;
-      return handleComment(request, response);
-    }
 
-    return false;
+      request.setEncoding('utf8');
+      let data = '';
+      request.on('data', chunk => {
+        data += chunk;
+      });
+      request.on('end', () => {
+        parseData(data, request);
+        return handleComment(request, response);
+      });
+      return;
+    }
+    next(request, response, next);
   }
 };
 

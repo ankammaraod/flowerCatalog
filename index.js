@@ -1,5 +1,5 @@
-// const { startServer } = require('./src/server/server.js');
-const { startServer } = require('server');
+const { startServer } = require('./src/server/server.js');
+// const { startServer } = require('server');
 const { initializePathsAndHandlers } = require('./src/app.js');
 
 const main = () => {

@@ -5,14 +5,14 @@ const handleGuestBookApi = (request, response) => {
 };
 
 const handleApiRouter = (guestBook) => {
-  return (request, response) => {
+  return (request, response, next) => {
     const { pathname } = request.url
     if (pathname === '/api/guest-book') {
       request.guestBook = guestBook;
       handleGuestBookApi(request, response);
-      return true;
+      return;
     }
-    return false;
+    next(request, response, next);
   }
 };
 

@@ -1,6 +1,6 @@
-const urlHandler = (request, response) => {
+const urlHandler = (request, response, next) => {
   request.url = new URL(request.url, 'https://' + request.headers.host);
-  return false;
+  next(request, response, next);
 };
 
 module.exports = { urlHandler };
