@@ -23,6 +23,7 @@ const serveAsyncFileHandler = (path) => {
 
     if (!fs.existsSync(fileName)) {
       next(request, response, next);
+      return;
     }
 
     fs.readFile(fileName, (error, content) => {
