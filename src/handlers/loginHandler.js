@@ -19,17 +19,17 @@ const page = `<html>
 </html>`
 
 
-const parseData = (data, request) => {
-  const urlSearchParams = new URLSearchParams(data);
-  const params = urlSearchParams.entries();
-  const bodyParams = {}
-  for (const param of params) {
-    const [key, value] = param;
-    bodyParams[key] = value;
-  }
-  request.bodyParams = bodyParams;
-  return;
-};
+// const parseData = (data, request) => {
+//   const urlSearchParams = new URLSearchParams(data);
+//   const params = urlSearchParams.entries();
+//   const bodyParams = {}
+//   for (const param of params) {
+//     const [key, value] = param;
+//     bodyParams[key] = value;
+//   }
+//   request.bodyParams = bodyParams;
+//   return;
+// };
 
 const handleLogin = (request, response) => {
   response.setHeader('Set-cookie', 'id=1');
@@ -43,13 +43,7 @@ const loginHandler = (request, response, next) => {
 
   if (pathname === '/login') {
     if (request.method === 'POST') {
-      request.setEncoding('utf-8');
-      let data = '';
-      request.on('data', chunk => data += chunk);
-      request.on('end', () => {
-        parseData(data, request);
-        handleLogin(request, response);
-      });
+      handleLogin(request, response);
       return;
     }
     response.setHeader('Content-type', 'text/html');

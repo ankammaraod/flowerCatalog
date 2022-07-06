@@ -8,6 +8,7 @@ const { urlHandler } = require('./handlers/urlHandler.js');
 const { handleApiRouter } = require('./handlers/handleApi.js');
 const { timeoutHandler } = require('./handlers/timeoutHandler.js');
 const { serveAsyncFileHandler } = require('./handlers/serveAsyncFileHandler.js');
+const { readAsyncDataHandler } = require('./handlers/readAsyncData.js');
 const fs = require('fs');
 const { request } = require('http');
 
@@ -41,6 +42,7 @@ const initializePathsAndHandlers = (commentsPath, templatePath) => {
 
   const handlers = [
     urlHandler,
+    readAsyncDataHandler,
     injectCookie,
     logRequestHandler,
     loginHandler,

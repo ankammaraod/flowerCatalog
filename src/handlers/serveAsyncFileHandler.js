@@ -34,7 +34,6 @@ const serveAsyncFileHandler = (path) => {
       response.setHeader('content-type', determineContentType(fileName));
       response.end(content);
     });
-
   };
 }
 module.exports = { serveAsyncFileHandler };

@@ -1,4 +1,4 @@
-const parseData = (data, request) => {
+const parseData = (data, request, next) => {
   const urlSearchParams = new URLSearchParams(data);
   const params = urlSearchParams.entries();
   const bodyParams = {}
@@ -7,7 +7,7 @@ const parseData = (data, request) => {
     bodyParams[key] = value;
   }
   request.bodyParams = bodyParams;
-  return;
+  next();
 };
 
 const readAsyncDataHandler = (request, response, next) => {
@@ -16,8 +16,7 @@ const readAsyncDataHandler = (request, response, next) => {
     let data = '';
     request.on('data', chunk => data += chunk);
     request.on('end', () => {
-      parseData(data, request);
-      handleLogin(request, response);
+      parseData(data, request, next);
     });
   }
   next();

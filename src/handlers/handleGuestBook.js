@@ -19,19 +19,6 @@ const formatComments = (comments) => {
   return html('ul', htmlComments);
 };
 
-const parseData = (data, request) => {
-
-  const urlSearchParams = new URLSearchParams(data);
-  const params = urlSearchParams.entries();
-  const bodyParams = {}
-  for (const param of params) {
-    const [key, value] = param;
-    bodyParams[key] = value;
-  }
-  request.bodyParams = bodyParams;
-  return;
-};
-
 const writeData = (path, content) => {
   fs.writeFileSync(path, JSON.stringify(content, 'utf-8'));
 };
@@ -77,20 +64,10 @@ const guestBookRouter = (guestBook, template, commentsPath) => {
     if (pathname === '/add-comment' && request.method === 'POST') {
       request.guestBook = guestBook;
       request.commentsPath = commentsPath;
-
-      request.setEncoding('utf8');
-      let data = '';
-      request.on('data', chunk => {
-        data += chunk;
-      });
-      request.on('end', () => {
-        parseData(data, request);
-        return handleComment(request, response);
-      });
-      return;
+      return handleComment(request, response);
     }
     next();
   }
 };
 
-module.exports = { guestBookRouter, parseData };
+module.exports = { guestBookRouter };
