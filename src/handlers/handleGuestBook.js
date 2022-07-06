@@ -93,4 +93,4 @@ const guestBookRouter = (guestBook, template, commentsPath) => {
   }
 };
 
-module.exports = { guestBookRouter };
+module.exports = { guestBookRouter, parseData };
