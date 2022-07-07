@@ -47,8 +47,8 @@ const loginHandler = (sessions) => {
     }
 
     if (!request.cookies.id) {
-      response.setHeader('Content-type', 'text/plain');
-      response.end('access denied');
+      response.setHeader('Content-type', 'text/html');
+      response.end(page);
       return;
     }
 
