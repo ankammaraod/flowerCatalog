@@ -24,16 +24,18 @@ const writeData = (path, content) => {
 };
 
 const handleDisplayComments = (request, response) => {
+  const { username } = request.session;
+  console.log(request.session)
 
   const { guestBook, template } = request;
 
   const formattedComments = formatComments(guestBook);
 
   const pageContent = template.replaceAll('--comments--', formattedComments);
-
+  const content = pageContent.replaceAll('--name--', username);
   response.setHeader('content-type', 'text/html');
-  response.end(pageContent);
-  // return true;
+  response.end(content);
+
 };
 
 

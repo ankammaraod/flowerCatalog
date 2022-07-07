@@ -56,4 +56,4 @@ const loginHandler = (sessions) => {
   };
 }
 
-module.exports = { loginHandler };
+module.exports = { loginHandler, page };

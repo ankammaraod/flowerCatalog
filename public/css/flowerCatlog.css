@@ -18,8 +18,7 @@ body {
 
 .sub-header {
   color: orange;
-  text-align: right;
-  border-bottom: 1px solid black;
+  padding: 2px;
 }
 
 .navigation {
@@ -32,4 +31,11 @@ img {
 
 .animated-image {
   text-align: right;
+}
+
+.header {
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
