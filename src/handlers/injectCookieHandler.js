@@ -1,6 +1,5 @@
-const parseCookies = (request, response) => {
+const parseCookies = (stringCookies) => {
   const cookies = {};
-  const stringCookies = request.headers.cookie;
   if (!stringCookies) {
     return cookies;
   }
@@ -12,7 +11,7 @@ const parseCookies = (request, response) => {
 };
 
 const injectCookie = (request, response, next) => {
-  request.cookies = parseCookies(request, response);
+  request.cookies = parseCookies(request.headers.cookie);
   next();
 };
 

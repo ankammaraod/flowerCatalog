@@ -18,7 +18,6 @@ const serveAsyncFileHandler = (path) => {
 
     const { pathname } = request.url;
     let fileName = path + pathname;
-    console.log('--inServeAsyncFile', pathname, request.method);
 
     if (pathname === '/') {
       fileName = path + pathname + 'flowerCatlog.html';

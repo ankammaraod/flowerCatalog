@@ -2,6 +2,7 @@ const {
   urlHandler,
   readBodyParams,
   injectCookie,
+  injectSession,
   logRequestHandler,
   loginHandler,
   handleApiRouter,
@@ -12,42 +13,29 @@ const {
 } = require('./handlers/handlers.js');
 
 const fs = require('fs');
+const { logoutHandler } = require('./handlers/logoutHandler.js');
 
 const readData = (path) => {
   return fs.readFileSync(path, 'utf-8');
 };
 
-let id = 0;
-const addId = (req, res, next) => {
-  req.id = id++;
-  next();
-}
-
-const debug = (msg) => (req, res, next) => {
-  console.log("DEBUG: ", msg, req.id, req.url, req.method);
-  next();
-};
+const sessions = {};
 
 const initializePathsAndHandlers = (commentsPath, templatePath) => {
   const guestBook = JSON.parse(readData(commentsPath));
   const template = readData(templatePath);
 
   const handlers = [
-    addId,
     urlHandler,
-    debug("after uriHandler"),
-    logRequestHandler,
-    debug("after logRequestHandler"),
     readBodyParams,
-    debug("after readBodyParams"),
     injectCookie,
-    debug("after injectCookie"),
-    loginHandler,
-    debug("after loginHandler"),
+    injectSession(sessions),
+    logRequestHandler,
+    loginHandler(sessions),
+    logoutHandler(sessions),
     handleApiRouter(guestBook),
     guestBookRouter(guestBook, template, commentsPath),
     serveAsyncFileHandler('./public'),
-    debug("after serveAsyncFileHandler"),
     fileNotFoundHandler
   ];
 

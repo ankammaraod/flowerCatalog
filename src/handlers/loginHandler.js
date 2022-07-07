@@ -18,34 +18,42 @@ const page = `<html>
 </body>
 </html>`
 
-const handleLogin = (request, response) => {
-  response.setHeader('Set-cookie', `id=${new Date().getTime()}`);
-  response.statusCode = 302;
-  response.setHeader('Location', '/flowerCatlog.html');
-  response.end();
-};
+const createSession = (request, response) => {
+  const { username } = request.bodyParams;
+  return { id: new Date().getTime(), username };
+}
 
-const loginHandler = (request, response, next) => {
-  const { pathname } = request.url;
 
-  if (pathname === '/login' && request.method === 'POST') {
-    handleLogin(request, response);
-    return;
-  }
+const loginHandler = (sessions) => {
+  return (request, response, next) => {
+    const { pathname } = request.url;
 
-  if (pathname === '/login' && request.method === 'GET') {
-    response.setHeader('Content-type', 'text/html')
-    response.end(page);
-    return;
-  }
 
-  if (!request.cookies.id) {
-    response.setHeader('Content-type', 'text/plain');
-    response.end('access denied');
-    return;
-  }
+    if (pathname === '/login' && request.method === 'GET' && !request.session) {
+      response.setHeader('Content-type', 'text/html')
+      response.end(page);
+      return;
+    }
 
-  next();
-};
+    if (pathname === '/login' && request.method === 'POST') {
+      const session = createSession(request, response);
+      sessions[session.id] = session;
+
+      response.setHeader('Set-cookie', `id=${session.id}`);
+      response.statusCode = 302;
+      response.setHeader('Location', '/flowerCatlog.html');
+      response.end();
+      return;
+    }
+
+    if (!request.cookies.id) {
+      response.setHeader('Content-type', 'text/plain');
+      response.end('access denied');
+      return;
+    }
+
+    next();
+  };
+}
 
 module.exports = { loginHandler };

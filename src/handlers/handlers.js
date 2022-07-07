@@ -10,16 +10,32 @@ const { timeoutHandler } = require('./timeoutHandler.js');
 const { serveAsyncFileHandler } = require('./serveAsyncFileHandler.js');
 const { readBodyParams } = require('./readBodyParamsHandler.js');
 const { injectCookie } = require('./injectCookieHandler.js')
+const { injectSession } = require('./injectSessionHandler');
+
+
+
+let id = 0;
+const addId = (req, res, next) => {
+  req.id = id++;
+  next();
+}
+
+const debug = (msg) => (req, res, next) => {
+  console.log("DEBUG: ", msg, req.id, req.url, req.method);
+  next();
+};
+
 
 module.exports = {
+  createRouter,
   urlHandler,
   readBodyParams,
   injectCookie,
+  injectSession,
   logRequestHandler,
   loginHandler,
   handleApiRouter,
   guestBookRouter,
   serveAsyncFileHandler,
   fileNotFoundHandler,
-  createRouter
 }
