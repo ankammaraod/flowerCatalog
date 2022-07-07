@@ -18,43 +18,33 @@ const page = `<html>
 </body>
 </html>`
 
-
-// const parseData = (data, request) => {
-//   const urlSearchParams = new URLSearchParams(data);
-//   const params = urlSearchParams.entries();
-//   const bodyParams = {}
-//   for (const param of params) {
-//     const [key, value] = param;
-//     bodyParams[key] = value;
-//   }
-//   request.bodyParams = bodyParams;
-//   return;
-// };
-
 const handleLogin = (request, response) => {
-  response.setHeader('Set-cookie', 'id=1');
+  response.setHeader('Set-cookie', `id=${new Date().getTime()}`);
   response.statusCode = 302;
-  response.setHeader('Location', '/');
+  response.setHeader('Location', '/flowerCatlog.html');
   response.end();
 };
 
 const loginHandler = (request, response, next) => {
   const { pathname } = request.url;
 
-  if (pathname === '/login') {
-    if (request.method === 'POST') {
-      handleLogin(request, response);
-      return;
-    }
-    response.setHeader('Content-type', 'text/html');
+  if (pathname === '/login' && request.method === 'POST') {
+    handleLogin(request, response);
+    return;
+  }
+
+  if (pathname === '/login' && request.method === 'GET') {
+    response.setHeader('Content-type', 'text/html')
     response.end(page);
     return;
   }
+
   if (!request.cookies.id) {
-    response.setHeader('Content-type', 'text/html');
-    response.end(page);
+    response.setHeader('Content-type', 'text/plain');
+    response.end('access denied');
     return;
   }
+
   next();
 };
 

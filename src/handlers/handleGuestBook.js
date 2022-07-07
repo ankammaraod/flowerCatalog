@@ -33,7 +33,7 @@ const handleDisplayComments = (request, response) => {
 
   response.setHeader('content-type', 'text/html');
   response.end(pageContent);
-  return true;
+  // return true;
 };
 
 
@@ -48,7 +48,7 @@ const handleComment = (request, response) => {
   writeData(commentsPath, guestBook);
 
   redirectionToGuestBook(request, response);
-  return true;
+  // return true;
 };
 
 const guestBookRouter = (guestBook, template, commentsPath) => {

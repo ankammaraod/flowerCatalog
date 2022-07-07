@@ -13,13 +13,17 @@ const determineContentType = (fileName) => {
 };
 
 const serveAsyncFileHandler = (path) => {
+
   return (request, response, next) => {
 
     const { pathname } = request.url;
     let fileName = path + pathname;
-    if (pathname == '/') {
+    console.log('--inServeAsyncFile', pathname, request.method);
+
+    if (pathname === '/') {
       fileName = path + pathname + 'flowerCatlog.html';
     }
+
 
     if (!fs.existsSync(fileName)) {
       next();
