@@ -43,16 +43,19 @@ const handleDisplayComments = (request, response) => {
 
 
 const handleComment = (request, response) => {
-  console.log('--bodyParams--' + request.bodyParams)
+
   const { name, comment } = request.bodyParams;
-  const { guestBook, commentsPath } = request;
+  if (name && comment) {
+    const { guestBook, commentsPath } = request;
 
-  const date = new Date().toLocaleString();
-  guestBook.unshift({ date, name, comment });
+    const date = new Date().toLocaleString();
+    guestBook.unshift({ date, name, comment });
 
-  writeData(commentsPath, guestBook);
-
-  redirectionToGuestBook(request, response);
+    writeData(commentsPath, guestBook);
+    response.end(JSON.stringify({ 'status': true }));
+    return;
+  }
+  response.end(JSON.stringify({ 'status': false }));
 };
 
 const guestBookRouter = (guestBook, template, commentsPath) => {
