@@ -24,7 +24,10 @@ const writeData = (path, content) => {
 };
 
 const handleDisplayComments = (request, response) => {
-  const { username } = request.session;
+  let username = '';
+  if (request.session) {
+    username = request.session.username;
+  }
   console.log(request.session)
 
   const { guestBook, template } = request;
@@ -40,7 +43,7 @@ const handleDisplayComments = (request, response) => {
 
 
 const handleComment = (request, response) => {
-
+  console.log('--bodyParams--' + request.bodyParams)
   const { name, comment } = request.bodyParams;
   const { guestBook, commentsPath } = request;
 
@@ -50,7 +53,6 @@ const handleComment = (request, response) => {
   writeData(commentsPath, guestBook);
 
   redirectionToGuestBook(request, response);
-  // return true;
 };
 
 const guestBookRouter = (guestBook, template, commentsPath) => {
