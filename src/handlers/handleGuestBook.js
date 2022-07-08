@@ -52,10 +52,13 @@ const handleComment = (request, response) => {
     guestBook.unshift({ date, name, comment });
 
     writeData(commentsPath, guestBook);
-    response.end(JSON.stringify({ 'status': true }));
+    response.statusCode = 201;
+    response.end();
+    // response.end(JSON.stringify({ 'status': true }));
     return;
   }
-  response.end(JSON.stringify({ 'status': false }));
+  response.end();
+  // response.end(JSON.stringify({ 'status': false }));
 };
 
 const guestBookRouter = (guestBook, template, commentsPath) => {

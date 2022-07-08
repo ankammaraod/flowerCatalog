@@ -26,15 +26,11 @@ const displayGuestBook = (xhr) => {
   formElement.reset();
 }
 
-const requestGuestBook = (response) => {
-  console.log(JSON.parse(response));
-  const status = JSON.parse(response).status;
-  if (status) {
-    const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', (event) => displayGuestBook(xhr));
-    xhr.open('GET', '/api/guest-book')
-    xhr.send();
-  }
+const requestGuestBook = (url) => {
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', (event) => displayGuestBook(xhr));
+  xhr.open('GET', url)
+  xhr.send();
 }
 
 const parseFormDetails = (formData) => {
@@ -51,9 +47,14 @@ const addComment = () => {
   const formData = new FormData(formElement);
 
   const body = parseFormDetails(formData).join('&');
-
   const xhr = new XMLHttpRequest();
-  xhr.addEventListener('load', (event) => requestGuestBook(xhr.response));
+
+  xhr.addEventListener('load', (event) => {
+    if (xhr.status) {
+      requestGuestBook('/api/guest-book');
+    }
+  });
+
   xhr.open('POST', '/add-comment');
   xhr.send(body);
 };
