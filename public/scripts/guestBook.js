@@ -33,18 +33,11 @@ const parseFormDetails = (formData) => {
   return parsedFormDetails;
 };
 
-const xhrPost = (callBack, path, data) => {
+const performXhr = (method, callBack, path, data = '') => {
   const xhr = new XMLHttpRequest();
   xhr.addEventListener('load', () => callBack(xhr));
-  xhr.open('POST', path);
+  xhr.open(method, path);
   xhr.send(data);
-};
-
-const XhrGet = (callBack, path, data = '') => {
-  const xhr = new XMLHttpRequest();
-  xhr.addEventListener('load', () => callBack(xhr));
-  xhr.open('GET', path);
-  xhr.send();
 };
 
 
@@ -52,7 +45,7 @@ const requestGuestBook = (url) => {
   const guestBook = (xhr) => {
     displayGuestBook(xhr);
   }
-  XhrGet(guestBook, url);
+  performXhr('GET', guestBook, url);
 };
 
 
@@ -67,7 +60,7 @@ const addComment = () => {
     }
   };
 
-  xhrPost(commentsBook, '/add-comment', body);
+  performXhr('POST', commentsBook, '/add-comment', body);
 };
 
 const main = () => {
