@@ -52,7 +52,6 @@ const requestGuestBook = (url) => {
   const guestBook = (xhr) => {
     displayGuestBook(xhr);
   }
-
   XhrGet(guestBook, url);
 };
 
@@ -77,5 +76,3 @@ const main = () => {
 };
 
 window.onload = main;
-
-//use the status code of response instead of sending true and false
