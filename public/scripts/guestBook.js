@@ -24,15 +24,6 @@ const displayGuestBook = (xhr) => {
   formElement.reset();
 };
 
-const parseFormDetails = (formData) => {
-  const parsedFormDetails = [];
-  for (const [name, value] of formData) {
-    const paramString = name + '=' + value;
-    parsedFormDetails.push(paramString);
-  }
-  return parsedFormDetails;
-};
-
 const performXhr = (method, callBack, path, data = '') => {
   const xhr = new XMLHttpRequest();
   xhr.addEventListener('load', () => callBack(xhr));
@@ -52,10 +43,10 @@ const requestGuestBook = (url) => {
 const addComment = () => {
   const formElement = document.querySelector('form');
   const formData = new FormData(formElement);
-  const body = parseFormDetails(formData).join('&');
+  const body = new URLSearchParams(formData);
 
   const commentsBook = (xhr) => {
-    if (xhr.status) {
+    if (xhr.status === 201) {
       requestGuestBook('/api/guest-book');
     }
   };
