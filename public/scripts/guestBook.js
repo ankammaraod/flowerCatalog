@@ -11,27 +11,18 @@ const formatComments = (comments) => {
   return html('ul', htmlComments);
 };
 
-
 const displayGuestBook = (xhr) => {
   const comments = JSON.parse(xhr.response);
-
   const htmlComments = formatComments(comments);
-
   const commentElement = document.querySelector('#comments');
   const ulElement = commentElement.firstChild;
+
   commentElement.removeChild(ulElement);
   commentElement.innerHTML = htmlComments;
 
   const formElement = document.querySelector('form');
   formElement.reset();
-}
-
-const requestGuestBook = (url) => {
-  const xhr = new XMLHttpRequest();
-  xhr.addEventListener('load', (event) => displayGuestBook(xhr));
-  xhr.open('GET', url)
-  xhr.send();
-}
+};
 
 const parseFormDetails = (formData) => {
   const parsedFormDetails = [];
@@ -42,21 +33,42 @@ const parseFormDetails = (formData) => {
   return parsedFormDetails;
 };
 
+const xhrPost = (callBack, path, data) => {
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', () => callBack(xhr));
+  xhr.open('POST', path);
+  xhr.send(data);
+};
+
+const XhrGet = (callBack, path, data = '') => {
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', () => callBack(xhr));
+  xhr.open('GET', path);
+  xhr.send();
+};
+
+
+const requestGuestBook = (url) => {
+  const guestBook = (xhr) => {
+    displayGuestBook(xhr);
+  }
+
+  XhrGet(guestBook, url);
+};
+
+
 const addComment = () => {
   const formElement = document.querySelector('form');
   const formData = new FormData(formElement);
-
   const body = parseFormDetails(formData).join('&');
-  const xhr = new XMLHttpRequest();
 
-  xhr.addEventListener('load', (event) => {
+  const commentsBook = (xhr) => {
     if (xhr.status) {
       requestGuestBook('/api/guest-book');
     }
-  });
+  };
 
-  xhr.open('POST', '/add-comment');
-  xhr.send(body);
+  xhrPost(commentsBook, '/add-comment', body);
 };
 
 const main = () => {
