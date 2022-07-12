@@ -19,6 +19,7 @@ const page = `<html>
 </html>`
 
 const createSession = (request, response) => {
+
   const { username } = request.bodyParams;
   return { id: new Date().getTime(), username };
 }

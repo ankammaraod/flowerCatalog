@@ -11,7 +11,7 @@ const { readBodyParams } = require('./readBodyParamsHandler.js');
 const { injectCookie } = require('./injectCookieHandler.js')
 const { injectSession } = require('./injectSessionHandler');
 const { uploadFileHandler } = require('./uploadFileHandler.js');
-
+const { readBody } = require('./parseBodyHandler.js');
 
 let id = 0;
 const addId = (req, res, next) => {
@@ -26,6 +26,7 @@ const debug = (msg) => (req, res, next) => {
 
 
 module.exports = {
+  readBody,
   createRouter,
   urlHandler,
   readBodyParams,

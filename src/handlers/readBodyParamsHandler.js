@@ -14,11 +14,17 @@ const readBodyParams = (request, response, next) => {
     next();
     return;
   }
+  const contentType = request.headers['content-type'];
 
-  let data = [];
-  request.on('data', chunk => data.push(chunk));
+  if (!contentType.startsWith('application/x-www-form-urlencoded')) {
+    next();
+    return;
+  }
+
+  let data = '';
+  request.on('data', chunk => data += chunk);
   request.on('end', () => {
-    request.body = data;
+    request.bodyParams = parseParams(data);
     next();
   });
 };
