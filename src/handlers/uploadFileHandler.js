@@ -35,14 +35,23 @@ const parseHeaders = (headers) => {
   return headers.toString().split('\r\n').filter(x => x);
 };
 
+const parseContent = (parsedHeaders, content) => {
+  const index = parsedHeaders[0].indexOf('filename');
+  if (index < 0) {
+    return content.toString().split(CRLF).filter(x => x)[0];
+  }
+  return content;
+};
+
 const parseField = (field) => {
   const crlfBuffer = Buffer.from(CRLF + CRLF);
   const indexOfCrlf = field.indexOf(crlfBuffer);
   const headers = field.slice(0, indexOfCrlf);
-  const content = field.slice(indexOfCrlf + crlfBuffer.length)
+  const content = field.slice(indexOfCrlf + crlfBuffer.length);
 
-  const parsedHeaders = parseHeaders(headers)
-  return { headers: parsedHeaders, content };
+  const parsedHeaders = parseHeaders(headers);
+  const parsedContent = parseContent(parsedHeaders, content);
+  return { headers: parsedHeaders, content: parsedContent };
 };
 
 
@@ -79,7 +88,9 @@ const uploadFileHandler = (request, response, next) => {
 
   if (pathname === '/upload-file' && method === 'POST') {
     const parsedContent = parseBody(request);
-    response.end(JSON.stringify(parsedContent));
+    console.log(parsedContent);
+    // response.end(JSON.stringify(parsedContent));
+    response.end();
     return;
   }
   next();
