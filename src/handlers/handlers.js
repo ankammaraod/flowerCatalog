@@ -10,7 +10,7 @@ const { serveAsyncFileHandler } = require('./serveAsyncFileHandler.js');
 const { readBodyParams } = require('./readBodyParamsHandler.js');
 const { injectCookie } = require('./injectCookieHandler.js')
 const { injectSession } = require('./injectSessionHandler');
-
+const { uploadFileHandler } = require('./uploadFileHandler.js');
 
 
 let id = 0;
@@ -37,4 +37,5 @@ module.exports = {
   guestBookRouter,
   serveAsyncFileHandler,
   fileNotFoundHandler,
+  uploadFileHandler
 }

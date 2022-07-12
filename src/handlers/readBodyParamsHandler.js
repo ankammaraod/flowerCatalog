@@ -14,11 +14,11 @@ const readBodyParams = (request, response, next) => {
     next();
     return;
   }
-  request.setEncoding('utf-8');
-  let data = '';
-  request.on('data', chunk => data += chunk);
+
+  let data = [];
+  request.on('data', chunk => data.push(chunk));
   request.on('end', () => {
-    request.bodyParams = parseParams(data);
+    request.body = data;
     next();
   });
 };

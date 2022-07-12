@@ -1,15 +1,17 @@
 const {
   urlHandler,
   readBodyParams,
-  injectCookie,
-  injectSession,
+  // injectCookie,
+  // injectSession,
   logRequestHandler,
-  loginHandler,
-  handleApiRouter,
-  guestBookRouter,
+  // loginHandler,
+  // handleApiRouter,
+  // guestBookRouter,
+  uploadFileHandler,
   serveAsyncFileHandler,
   fileNotFoundHandler,
   createRouter
+
 } = require('./handlers/handlers.js');
 
 const fs = require('fs');
@@ -28,13 +30,14 @@ const initializePathsAndHandlers = (commentsPath, templatePath) => {
   const handlers = [
     urlHandler,
     readBodyParams,
-    injectCookie,
-    injectSession(sessions),
+    // injectCookie,
+    // injectSession(sessions),
     logRequestHandler,
-    loginHandler(sessions),
-    logoutHandler(sessions),
-    handleApiRouter(guestBook),
-    guestBookRouter(guestBook, template, commentsPath),
+    // loginHandler(sessions),
+    // logoutHandler(sessions),
+    // handleApiRouter(guestBook),
+    // guestBookRouter(guestBook, template, commentsPath),
+    uploadFileHandler,
     serveAsyncFileHandler('./public'),
     fileNotFoundHandler
   ];
