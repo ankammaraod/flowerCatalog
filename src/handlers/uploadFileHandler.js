@@ -10,9 +10,8 @@ const uploadFileHandler = (request, response, next) => {
   }
 
   if (pathname === '/upload-file' && method === 'POST') {
-    // const parsedContent = parseBody(request);
     console.log(request.body);
-    response.end();
+    response.end('files Uploaded');
     return;
   }
   next();

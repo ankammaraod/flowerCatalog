@@ -32,13 +32,23 @@ const extractFields = (bufferData, boundaryStartPoints, bufferBoundary) => {
 };
 
 const parseHeaders = (headers) => {
-  return headers.toString().split('\r\n').filter(x => x);
+  const parsedHeaders = {};
+  const headersString = headers.toString().split('\r\n').filter(x => x)[0];
+  const splitHeaders = headersString.split(';');
+  splitHeaders.forEach(header => {
+
+    const separator = header.includes('=') ? '=' : ':';
+    const [name, value] = header.split(separator);
+    parsedHeaders[name] = value;
+
+  })
+  return parsedHeaders
 };
 
 const parseContent = (parsedHeaders, content) => {
-  const index = parsedHeaders[0].indexOf('filename');
-  if (index < 0) {
-    return content.toString().split(CRLF).filter(x => x)[0];
+
+  if (parsedHeaders['filename']) {
+    return content.toString().split(CRLF).filter(x => x)[0].trim();
   }
   return content;
 };
@@ -55,7 +65,6 @@ const parseField = (field) => {
 };
 
 const parseBody = (request, data) => {
-  const body = [];
   const bufferData = Buffer.concat(data)
   const boundaryValue = getBoundary(request);
 
@@ -64,11 +73,7 @@ const parseBody = (request, data) => {
 
   const fields = extractFields(bufferData, boundaryStartPoints, bufferBoundary);
 
-
-  fields.forEach(field => {
-    body.push(parseField(field));
-  });
-  return body.slice(0, -1);
+  return fields.map(field => parseField(field)).slice(0, -1);
 };
 
 const readBody = (request, response, next) => {
