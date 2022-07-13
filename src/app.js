@@ -24,7 +24,10 @@ const readData = (path) => {
 
 const sessions = {};
 
-const initializePathsAndHandlers = (commentsPath, templatePath) => {
+const configuration = () => {
+  const commentsPath = './data/comments.json';
+  const templatePath = './templates/guestBook.html';
+
   const guestBook = JSON.parse(readData(commentsPath));
   const template = readData(templatePath);
 
@@ -47,4 +50,6 @@ const initializePathsAndHandlers = (commentsPath, templatePath) => {
   return createRouter(handlers);
 };
 
-module.exports = { initializePathsAndHandlers };
+const app = configuration();
+
+module.exports = { app };
