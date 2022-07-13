@@ -5,7 +5,7 @@ const handleGuestBookApi = (request, response) => {
 };
 
 const handleApiRouter = (guestBook) => {
-  console.log('inside handleApiRouter')
+
   return (request, response, next) => {
     const { pathname } = request.url
     if (pathname === '/api/guest-book' && request.method === 'GET') {

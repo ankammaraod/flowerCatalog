@@ -20,5 +20,8 @@
   "homepage": "https://github.com/ankammaraod/flowerCatalog#readme",
   "dependencies": {
     "server": "github:ankammaraod/server"
+  },
+  "devDependencies": {
+    "supertest": "^6.2.4"
   }
 }

@@ -22,11 +22,10 @@ const readData = (path) => {
   return fs.readFileSync(path, 'utf-8');
 };
 
-const sessions = {};
 
-const configuration = () => {
-  const commentsPath = './data/comments.json';
-  const templatePath = './templates/guestBook.html';
+
+const configuration = (commentsPath, templatePath, sessions) => {
+
 
   const guestBook = JSON.parse(readData(commentsPath));
   const template = readData(templatePath);
@@ -37,7 +36,7 @@ const configuration = () => {
     readBody,
     injectCookie,
     injectSession(sessions),
-    logRequestHandler,
+    // logRequestHandler,
     loginHandler(sessions),
     logoutHandler(sessions),
     handleApiRouter(guestBook),
@@ -50,6 +49,10 @@ const configuration = () => {
   return createRouter(handlers);
 };
 
-const app = configuration();
+// const sessions = {};
+const commentsPath = './data/comments.json';
+const templatePath = './templates/guestBook.html';
+
+const app = (sessions = {}) => configuration(commentsPath, templatePath, sessions);
 
 module.exports = { app };

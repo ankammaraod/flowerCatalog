@@ -46,7 +46,7 @@ const loginHandler = (sessions) => {
       response.end();
       return;
     }
-    console.log(request.session);
+
     if (!request.cookies.id || !request.session) {
       response.setHeader('Content-type', 'text/html');
       response.end(page);

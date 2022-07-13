@@ -28,7 +28,6 @@ const handleDisplayComments = (request, response) => {
   if (request.session) {
     username = request.session.username;
   }
-  console.log(request.session)
 
   const { guestBook, template } = request;
 
