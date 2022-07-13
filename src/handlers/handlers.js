@@ -12,6 +12,8 @@ const { injectCookie } = require('./injectCookieHandler.js')
 const { injectSession } = require('./injectSessionHandler');
 const { uploadFileHandler } = require('./uploadFileHandler.js');
 const { readBody } = require('./parseBodyHandler.js');
+const { authenticate } = require('./authenticationHandler');
+const { registerUser } = require('./registerHandler.js');
 
 let id = 0;
 const addId = (req, res, next) => {
@@ -38,5 +40,7 @@ module.exports = {
   guestBookRouter,
   serveAsyncFileHandler,
   fileNotFoundHandler,
-  uploadFileHandler
+  uploadFileHandler,
+  authenticate,
+  registerUser
 }

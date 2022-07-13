@@ -9,9 +9,6 @@ const createSession = () => {
   return { sessions, id };
 };
 
-
-
-
 describe('GET /login', () => {
 
   it('should give login page for /login', (done) => {
@@ -34,12 +31,16 @@ describe('POST /login', () => {
       .post('/login')
       .send('username=ankammarao')
       .expect(302)
-      .end((err, res) => {
-        if (res.headers.location !== '/flowerCatlog.html') {
-          throw new Error();
-        }
-        done();
-      })
+      .expect('location', '/flowerCatlog.html', done);
+
+  });
+  it('should not login an unregistered user', (done) => {
+    request(app())
+
+      .post('/login')
+      .send('username=unRegisteredUser')
+      .expect(401)
+      .expect(/user not registered/, done);
   });
 });
 
@@ -53,9 +54,7 @@ describe('Get /ankammrao', () => {
       .set('cookie', `id=${id}`)
       .expect('file not found')
       .expect('content-type', 'text/plain')
-      .expect(404)
-      .end(done);
-
+      .expect(404, done);
   });
 });
 
@@ -69,8 +68,8 @@ describe('Get /', () => {
       .set('cookie', `id=${id}`)
       .expect(/freshOrigins/)
       .expect('content-type', 'text/html')
-      .expect(200)
-      .end(done);
+      .expect(200, done);
+
   });
 });
 
@@ -83,7 +82,7 @@ describe('get /guest-book', () => {
       .set('cookie', `id=${id}`)
       .expect(/add-comment/)
       .expect('content-type', 'text/html')
-      .expect(200)
-      .end(done);
+      .expect(200, done);
+
   });
 });

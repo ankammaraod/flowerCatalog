@@ -40,7 +40,6 @@ const handleDisplayComments = (request, response) => {
 
 };
 
-
 const handleComment = (request, response) => {
 
   const { name, comment } = request.bodyParams;
@@ -53,11 +52,10 @@ const handleComment = (request, response) => {
     writeData(commentsPath, guestBook);
     response.statusCode = 201;
     response.end();
-    // response.end(JSON.stringify({ 'status': true }));
     return;
   }
   response.end();
-  // response.end(JSON.stringify({ 'status': false }));
+
 };
 
 const guestBookRouter = (guestBook, template, commentsPath) => {

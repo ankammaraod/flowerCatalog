@@ -11,7 +11,9 @@ const {
   uploadFileHandler,
   serveAsyncFileHandler,
   fileNotFoundHandler,
-  createRouter
+  createRouter,
+  authenticate,
+  registerUser,
 
 } = require('./handlers/handlers.js');
 
@@ -22,11 +24,9 @@ const readData = (path) => {
   return fs.readFileSync(path, 'utf-8');
 };
 
+const configuration = (commentsPath, templatePath, usersPath, sessions) => {
 
-
-const configuration = (commentsPath, templatePath, sessions) => {
-
-
+  const users = JSON.parse(readData(usersPath));
   const guestBook = JSON.parse(readData(commentsPath));
   const template = readData(templatePath);
 
@@ -36,7 +36,9 @@ const configuration = (commentsPath, templatePath, sessions) => {
     readBody,
     injectCookie,
     injectSession(sessions),
-    // logRequestHandler,
+    logRequestHandler,
+    registerUser(users, usersPath),
+    authenticate(users),
     loginHandler(sessions),
     logoutHandler(sessions),
     handleApiRouter(guestBook),
@@ -52,7 +54,9 @@ const configuration = (commentsPath, templatePath, sessions) => {
 // const sessions = {};
 const commentsPath = './data/comments.json';
 const templatePath = './templates/guestBook.html';
+const usersPath = './data/users.json'
+// const users = ['ankammarao'];
 
-const app = (sessions = {}) => configuration(commentsPath, templatePath, sessions);
+const app = (sessions = {}) => configuration(commentsPath, templatePath, usersPath, sessions);
 
 module.exports = { app };

@@ -15,6 +15,7 @@ const page = `<html>
     </div>
     <input type="submit" value="submit">
   </form>
+  <a href='/register'>register</a>
 </body>
 </html>`
 
@@ -28,7 +29,6 @@ const createSession = (request, response) => {
 const loginHandler = (sessions) => {
   return (request, response, next) => {
     const { pathname } = request.url;
-
 
     if (pathname === '/login' && request.method === 'GET' && !request.session) {
       response.setHeader('Content-type', 'text/html')
@@ -45,6 +45,11 @@ const loginHandler = (sessions) => {
       response.setHeader('Location', '/flowerCatlog.html');
       response.end();
       return;
+    }
+
+    if ((pathname === '/register.html' || pathname === '/scripts/registerUser.js')) {
+      next();
+      return
     }
 
     if (!request.cookies.id || !request.session) {
