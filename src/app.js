@@ -31,7 +31,7 @@ const configuration = (commentsPath, templatePath, usersPath, sessions) => {
   const template = readData(templatePath);
 
   const handlers = [
-    urlHandler,
+    // urlHandler,
     readBodyParams,
     readBody,
     injectCookie,

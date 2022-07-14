@@ -20,21 +20,19 @@ const page = `<html>
 </html>`
 
 const redirectLogin = (request, response, next) => {
-  response.statusCode = 302;
-  response.setHeader('location', '/login.html');
+  response.redirect('/login.html');
   response.end();
-}
+};
 
 const createSession = (request, response) => {
-
   const { username } = request.bodyParams;
   return { id: new Date().getTime(), username };
-}
+};
 
 
 const loginHandler = (sessions) => {
   return (request, response, next) => {
-    const { pathname } = request.url;
+    const pathname = request.url;
 
     if (pathname === '/login' && request.method === 'GET' && !request.session) {
       redirectLogin(request, response, next);
@@ -46,8 +44,7 @@ const loginHandler = (sessions) => {
       sessions[session.id] = session;
 
       response.setHeader('Set-cookie', `id=${session.id}`);
-      response.statusCode = 302;
-      response.setHeader('Location', '/flowerCatlog.html');
+      response.redirect('/flowerCatlog.html');
       response.end();
       return;
     }

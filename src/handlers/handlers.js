@@ -14,7 +14,7 @@ const { uploadFileHandler } = require('./uploadFileHandler.js');
 const { readBody } = require('./parseBodyHandler.js');
 const { authenticate } = require('./authenticationHandler');
 const { registerUser } = require('./registerHandler.js');
-
+const { logoutHandler } = require('./logoutHandler.js');
 let id = 0;
 const addId = (req, res, next) => {
   req.id = id++;
@@ -42,5 +42,6 @@ module.exports = {
   fileNotFoundHandler,
   uploadFileHandler,
   authenticate,
-  registerUser
+  registerUser,
+  logoutHandler
 }

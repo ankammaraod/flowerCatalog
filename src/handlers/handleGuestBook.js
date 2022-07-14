@@ -1,9 +1,9 @@
 const fs = require("fs");
 
 const redirectionToGuestBook = (request, response) => {
-  response.statusCode = 302;
-  response.setHeader('Location', '/guest-book');
-  response.end('');
+  response.status(302);
+  response.redirect('/guest-book');
+  response.end();
 };
 
 const html = (tag, content) => {
@@ -50,8 +50,8 @@ const handleComment = (request, response) => {
     guestBook.unshift({ date, name, comment });
 
     writeData(commentsPath, guestBook);
-    response.statusCode = 201;
-    response.end();
+    response.status(201).end();
+
     return;
   }
   response.end();
@@ -60,7 +60,7 @@ const handleComment = (request, response) => {
 
 const guestBookRouter = (guestBook, template, commentsPath) => {
   return (request, response, next) => {
-    const { pathname } = request.url
+    const pathname = request.url
 
     if (pathname === '/guest-book' && request.method === 'GET') {
       request.guestBook = guestBook;

@@ -20,13 +20,14 @@ const readBodyParams = (request, response, next) => {
     next();
     return;
   }
+  request.bodyParams = request.body;
 
-  let data = '';
-  request.on('data', chunk => data += chunk);
-  request.on('end', () => {
-    request.bodyParams = parseParams(data);
-    next();
-  });
+  // let data = '';
+  // request.on('data', chunk => data += chunk);
+  // request.on('end', () => {
+  // request.bodyParams = parseParams(data);
+  next();
+  // });
 };
 
 module.exports = { readBodyParams };
