@@ -40,9 +40,25 @@ describe('POST /login', () => {
       .post('/login')
       .send('username=unRegisteredUser')
       .expect(401)
-      .expect(/user not registered/, done);
+      .expect(/invalid user/, done);
   });
 });
+
+
+describe('Get /register.html', () => {
+  it('should server the html', (done) => {
+    const { sessions, id } = createSession();
+
+    request(app(sessions))
+      .get('/register.html')
+      .set('cookie', `id=${id}`)
+      .expect(/User Registration/)
+      .expect('content-type', 'text/html')
+      .expect(200, done);
+  });
+});
+
+
 
 
 describe('Get /ankammrao', () => {

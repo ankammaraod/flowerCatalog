@@ -10,7 +10,7 @@ const authenticate = (users) => {
 
     if (!users.includes(username)) {
       response.statusCode = 401;
-      response.end('invalid user');
+      response.end();
       return;
     }
     next();

@@ -5,7 +5,7 @@ const performXhr = (method, callBack, path, data = '') => {
   xhr.send(data);
 };
 
-const registerUser = () => {
+const loginUser = () => {
   const formElement = document.querySelector('form');
   const formData = new FormData(formElement);
   const body = new URLSearchParams(formData);
@@ -13,23 +13,21 @@ const registerUser = () => {
   const messageElement = document.querySelector('#message');
 
   const displayMessage = (xhr) => {
-    console.log(xhr.status);
-    if (xhr.status === 201) {
-      messageElement.innerHTML = "Registered successful..."
-
+    if (xhr.status === 401) {
+      messageElement.innerHTML = "invalid user..."
+      formElement.reset();
     }
-    if (xhr.status === 403) {
-      messageElement.innerHTML = "User already exist..."
+    if (xhr.status === 200) {
+      window.location = 'http://localhost:9000/flowerCatlog.html'
     }
-    formElement.reset();
   }
 
-  performXhr('POST', displayMessage, '/register', body);
+  performXhr('POST', displayMessage, '/login', body);
 };
 
 const main = () => {
   const button = document.querySelector('#submit');
-  button.addEventListener('click', registerUser);
+  button.addEventListener('click', loginUser);
 };
 
 window.onload = main;
