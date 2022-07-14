@@ -19,6 +19,12 @@ const page = `<html>
 </body>
 </html>`
 
+const redirectLogin = (request, response, next) => {
+  response.statusCode = 302;
+  response.setHeader('location', '/login.html');
+  response.end();
+}
+
 const createSession = (request, response) => {
 
   const { username } = request.bodyParams;
@@ -31,8 +37,10 @@ const loginHandler = (sessions) => {
     const { pathname } = request.url;
 
     if (pathname === '/login' && request.method === 'GET' && !request.session) {
-      response.setHeader('Content-type', 'text/html')
-      response.end(page);
+      redirectLogin(request, response, next);
+      // response.statusCode = 302;
+      // response.setHeader('location', '/login.html');
+      // response.end();
       return;
     }
 
@@ -47,15 +55,23 @@ const loginHandler = (sessions) => {
       return;
     }
 
-    if ((pathname === '/register.html' || pathname === '/scripts/registerUser.js')) {
+    if (pathname === '/register.html' || pathname === '/scripts/registerUser.js') {
+      next();
+      return
+    }
+    if (pathname === '/login.html' || pathname === '/scripts/loginUser.js') {
       next();
       return
     }
 
+
     if (!request.cookies.id || !request.session) {
-      response.setHeader('Content-type', 'text/html');
-      response.end(page);
+      redirectLogin(request, response, next);
       return;
+      // response.statusCode = 302;
+      // response.setHeader('location', '/login.html');
+      // response.end();
+      // return;
     }
 
     next();
