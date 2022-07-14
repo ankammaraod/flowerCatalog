@@ -38,9 +38,6 @@ const loginHandler = (sessions) => {
 
     if (pathname === '/login' && request.method === 'GET' && !request.session) {
       redirectLogin(request, response, next);
-      // response.statusCode = 302;
-      // response.setHeader('location', '/login.html');
-      // response.end();
       return;
     }
 
@@ -55,23 +52,17 @@ const loginHandler = (sessions) => {
       return;
     }
 
-    if (pathname === '/register.html' || pathname === '/scripts/registerUser.js') {
-      next();
-      return
-    }
-    if (pathname === '/login.html' || pathname === '/scripts/loginUser.js') {
-      next();
-      return
-    }
+    const routes = ['/register.html', '/scripts/registerUser.js',
+      '/login.html', '/scripts/loginUser.js'];
 
+    if (routes.includes(pathname)) {
+      next();
+      return;
+    }
 
     if (!request.cookies.id || !request.session) {
       redirectLogin(request, response, next);
       return;
-      // response.statusCode = 302;
-      // response.setHeader('location', '/login.html');
-      // response.end();
-      // return;
     }
 
     next();
