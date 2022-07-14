@@ -1,62 +1,68 @@
+const express = require('express');
+
 const {
-  urlHandler,
+  authenticate,
+  injectSession,
+  injectCookie,
+  loginHandler,
+  logoutHandler,
+  uploadFileHandler,
   readBodyParams,
   readBody,
-  injectCookie,
-  injectSession,
   logRequestHandler,
-  loginHandler,
   handleApiRouter,
   guestBookRouter,
-  uploadFileHandler,
-  serveAsyncFileHandler,
-  fileNotFoundHandler,
-  createRouter,
-  authenticate,
   registerUser,
-
-} = require('./handlers/handlers.js');
+} = require('./handlers/handlers.js')
 
 const fs = require('fs');
-const { logoutHandler } = require('./handlers/logoutHandler.js');
 
 const readData = (path) => {
   return fs.readFileSync(path, 'utf-8');
 };
 
-const configuration = (commentsPath, templatePath, usersPath, sessions) => {
-
-  const users = JSON.parse(readData(usersPath));
+const createApp = (commentsPath, templatePath, usersPath) => {
+  const sessions = {}
   const guestBook = JSON.parse(readData(commentsPath));
   const template = readData(templatePath);
+  const users = JSON.parse(readData(usersPath));
 
-  const handlers = [
-    // urlHandler,
-    readBodyParams,
-    readBody,
-    injectCookie,
-    injectSession(sessions),
-    logRequestHandler,
-    registerUser(users, usersPath),
-    authenticate(users),
-    loginHandler(sessions),
-    logoutHandler(sessions),
-    handleApiRouter(guestBook),
-    guestBookRouter(guestBook, template, commentsPath),
-    uploadFileHandler,
-    serveAsyncFileHandler('./public'),
-    fileNotFoundHandler
-  ];
+  const app = express();
 
-  return createRouter(handlers);
-};
+  app.use(express.urlencoded(
+    { extended: true }
+  ));
 
-// const sessions = {};
+  app.use(readBodyParams);
+  app.use(readBody);
+  app.use(injectCookie);
+  app.use(injectSession(sessions));
+  app.use(logRequestHandler);
+
+  app.get('/register', registerUser(users, usersPath));
+  app.post('/register', registerUser(users, usersPath));
+
+  app.get('/login', loginHandler(sessions))
+  app.post('/login', loginHandler(sessions))
+  app.get(logoutHandler(sessions));
+  app.use(authenticate(users));
+
+
+  app.use(express.static('public'));
+
+  app.get('/guest-book', guestBookRouter(guestBook, template, commentsPath));
+  app.post('/add-comment', guestBookRouter(guestBook, template, commentsPath));
+
+  app.get('/api/guest-book', handleApiRouter(guestBook));
+
+  app.post(uploadFileHandler);
+
+  return app;
+}
+
 const commentsPath = './data/comments.json';
 const templatePath = './templates/guestBook.html';
 const usersPath = './data/users.json'
-// const users = ['ankammarao'];
 
-const app = (sessions = {}) => configuration(commentsPath, templatePath, usersPath, sessions);
-
+const app = createApp(commentsPath, templatePath, usersPath);
 module.exports = { app };
