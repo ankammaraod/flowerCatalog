@@ -77,4 +77,20 @@ const guestBookRouter = (guestBook, template, commentsPath) => {
   }
 };
 
-module.exports = { guestBookRouter };
+const serveGuestBook = (guestBook, template) => {
+  return (request, response, next) => {
+    request.guestBook = guestBook;
+    request.template = template;
+    return handleDisplayComments(request, response);
+  }
+};
+
+const handleAddComment = (guestBook, guestBookPath) => {
+  return (request, response, next) => {
+    request.guestBook = guestBook;
+    request.commentsPath = guestBookPath;
+    return handleComment(request, response);
+  }
+}
+
+module.exports = { serveGuestBook, handleAddComment };

@@ -8,13 +8,13 @@ const {
   loginHandler,
   logoutHandler,
   uploadFileHandler,
+  serveUploadFile,
   readBodyParams,
   readBody,
   logRequestHandler,
   handleApiRouter,
-
-  guestBookRouter,
-
+  handleAddComment,
+  serveGuestBook,
   registerUser,
   protectionHandler,
   redirectToLogin,
@@ -62,12 +62,12 @@ const createApp = (commentsPath, templatePath, usersPath, sessions) => {
   app.use(protectionHandler)
   app.use(express.static('public'));
 
-  app.get('/guest-book', guestBookRouter(comments, template, commentsPath));
-  app.post('/add-comment', guestBookRouter(comments, template, commentsPath));
+  app.get('/guest-book', serveGuestBook(comments, template));//
+  app.post('/add-comment', handleAddComment(comments, commentsPath));//
 
   app.get('/api/guest-book', handleApiRouter(comments));
 
-  app.get('/upload-file', uploadFileHandler);
+  app.get('/upload-file', serveUploadFile);//
   app.post('/upload-file', uploadFileHandler);
 
   return app;
