@@ -44,8 +44,10 @@ const loginHandler = (sessions) => {
       sessions[session.id] = session;
 
       response.setHeader('Set-cookie', `id=${session.id}`);
-      response.redirect('/flowerCatlog.html');
-      response.end();
+
+      // response.redirect('/flowerCatlog.html');
+      // response.end();
+      next()
       return;
     }
 

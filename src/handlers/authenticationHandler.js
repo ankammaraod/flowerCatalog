@@ -1,19 +1,23 @@
 const authenticate = (users) => {
   return (request, response, next) => {
+    console.log('in authenticate handler', users)
+
     const pathname = request.url;
-    if (pathname !== '/login' || request.method !== 'POST') {
+    if (pathname !== '/login') {
       next();
       return;
     }
 
     const { username } = request.bodyParams;
-
+    console.log(users, username);
     if (!users.includes(username)) {
-      response.statusCode(401);
+      response.status(401);
       response.end();
       return;
     }
-    next();
+    response.redirect('/flowerCatlog.html');
+    response.end();
+    return;
   };
 };
 

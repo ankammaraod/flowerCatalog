@@ -43,9 +43,9 @@ const createApp = (commentsPath, templatePath, usersPath, sessions) => {
 
   app.get('/login', loginHandler(sessions))
   app.post('/login', loginHandler(sessions))
-  app.get('/logout', logoutHandler(sessions));
-  app.use(authenticate(users));
+  app.post('/login', authenticate(users));
 
+  app.get('/logout', logoutHandler(sessions));
 
   app.use(express.static('public'));
 
@@ -64,6 +64,6 @@ const commentsPath = './data/comments.json';
 const templatePath = './templates/guestBook.html';
 const usersPath = './data/users.json'
 
-app = createApp(commentsPath, templatePath, usersPath, sessions = {});
+app = (sessions = {}) => createApp(commentsPath, templatePath, usersPath, sessions);
 
 module.exports = { app };
