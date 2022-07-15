@@ -1,8 +1,6 @@
 const logoutHandler = (sessions) => {
   return (request, response, next) => {
-
     const pathname = request.url;
-
     if (pathname === '/logout') {
       const { id } = request.cookies;
       delete sessions[id];

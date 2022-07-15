@@ -21,8 +21,7 @@ const readData = (path) => {
   return fs.readFileSync(path, 'utf-8');
 };
 
-const createApp = (commentsPath, templatePath, usersPath) => {
-  const sessions = {}
+const createApp = (commentsPath, templatePath, usersPath, sessions) => {
   const guestBook = JSON.parse(readData(commentsPath));
   const template = readData(templatePath);
   const users = JSON.parse(readData(usersPath));
@@ -44,7 +43,7 @@ const createApp = (commentsPath, templatePath, usersPath) => {
 
   app.get('/login', loginHandler(sessions))
   app.post('/login', loginHandler(sessions))
-  app.get(logoutHandler(sessions));
+  app.get('/logout', logoutHandler(sessions));
   app.use(authenticate(users));
 
 
@@ -60,9 +59,11 @@ const createApp = (commentsPath, templatePath, usersPath) => {
   return app;
 }
 
+
 const commentsPath = './data/comments.json';
 const templatePath = './templates/guestBook.html';
 const usersPath = './data/users.json'
 
-const app = createApp(commentsPath, templatePath, usersPath);
+app = createApp(commentsPath, templatePath, usersPath, sessions = {});
+
 module.exports = { app };
