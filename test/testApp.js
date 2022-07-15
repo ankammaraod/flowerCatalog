@@ -11,12 +11,22 @@ const createSession = () => {
 
 describe('GET /login', () => {
 
-  it('should give login page for /login', (done) => {
+  it('should redirect to /login.html', (done) => {
     request(app())
 
       .get('/login')
+      .expect('location', '/login.html')
+      .expect(302)
+      .end((err, res) => {
+        done(err);
+      })
+  });
+
+  it('should redirect to /login.html', (done) => {
+    request(app())
+
+      .get('/login.html')
       .expect(/login/)
-      .expect('content-type', 'text/html')
       .expect(200)
       .end((err, res) => {
         done(err);
@@ -34,32 +44,36 @@ describe('POST /login', () => {
       .expect('location', '/index.html', done);
 
   });
+
   it('should not login an unregistered user', (done) => {
     request(app())
 
       .post('/login')
       .send('username=unRegisteredUser')
-      .expect(401)
-      .expect(/invalid user/, done);
+      .expect(401, done);
   });
 });
 
 
 describe('Get /register.html', () => {
-  it('should server the html', (done) => {
-    const { sessions, id } = createSession();
+  it('should server the register.html', (done) => {
 
-    request(app(sessions))
+    request(app())
       .get('/register.html')
-      .set('cookie', `id=${id}`)
       .expect(/User Registration/)
-      .expect('content-type', 'text/html')
+      .expect('content-type', 'text/html; charset=UTF-8')
       .expect(200, done);
   });
+
+  it('should redirect to register.html', (done) => {
+
+    request(app())
+      .get('/register')
+      .expect('location', '/register.html')
+      .expect(302, done);
+  });
+
 });
-
-
-
 
 describe('Get /ankammrao', () => {
   it('should give 404 code for /ankammarao', (done) => {
@@ -68,8 +82,6 @@ describe('Get /ankammrao', () => {
     request(app(sessions))
       .get('/badFile')
       .set('cookie', `id=${id}`)
-      .expect('file not found')
-      .expect('content-type', 'text/plain')
       .expect(404, done);
   });
 });
@@ -83,13 +95,13 @@ describe('Get /', () => {
       .get('/')
       .set('cookie', `id=${id}`)
       .expect(/freshOrigins/)
-      .expect('content-type', 'text/html')
+      .expect('content-type', 'text/html; charset=UTF-8')
       .expect(200, done);
 
   });
 });
 
-describe('get /guest-book', () => {
+describe('Get /guest-book', () => {
   it('should serve the guest book', (done) => {
     const { sessions, id } = createSession();
 
@@ -100,5 +112,34 @@ describe('get /guest-book', () => {
       .expect('content-type', 'text/html')
       .expect(200, done);
 
+  });
+});
+
+describe('Get /file-upload', () => {
+  it('should server the file-upload.html', (done) => {
+    const { sessions, id } = createSession();
+
+    request(app(sessions))
+      .get('/fileUpload.html')
+      .set('cookie', `id=${id}`)
+      .expect(/uploadFile : /)
+      .expect('content-type', 'text/html; charset=UTF-8')
+      .expect(200, done);
+
+  });
+});
+
+
+describe('Post /file-upload', () => {
+  it('should give the response of file uploaded', (done) => {
+    const { sessions, id } = createSession();
+
+    request(app(sessions))
+      .post('/fileUpload.html')
+      .set('cookie', `id=${id}`)
+      .field('username', 'ankammarao')
+      .field('file', 'index.js')
+      .expect('files Uploaded')
+      .expect(200, done);
   });
 });

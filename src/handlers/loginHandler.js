@@ -12,11 +12,6 @@ const createSession = (request, response) => {
 const loginHandler = (sessions) => {
   return (request, response, next) => {
 
-    if (request.method === 'GET' && !request.session) {
-      redirectLogin(request, response, next);
-      return;
-    }
-
     if (request.method === 'POST') {
       const session = createSession(request, response);
       sessions[session.id] = session;
@@ -26,6 +21,14 @@ const loginHandler = (sessions) => {
       return;
     }
   };
+};
+
+
+const redirectToLogin = (request, response, next) => {
+  if (!request.session) {
+    redirectLogin(request, response, next);
+    return;
+  }
 }
 
-module.exports = { loginHandler };
+module.exports = { loginHandler, redirectToLogin };

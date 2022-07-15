@@ -2,9 +2,9 @@ const uploadFileHandler = (request, response, next) => {
   const { method } = request;
 
   if (method === 'GET') {
-    response.statusCode = 302;
-    response.setHeader('location', '/fileUpload.html')
-    response.send();
+    response.status(302);
+    response.redirect('/fileUpload.html');
+    response.end();
     return;
   }
 
@@ -13,7 +13,6 @@ const uploadFileHandler = (request, response, next) => {
     response.send('files Uploaded');
     return;
   }
-  next();
 };
 
 module.exports = { uploadFileHandler };

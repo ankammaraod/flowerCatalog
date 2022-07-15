@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 
 const {
   authenticate,
@@ -11,23 +12,36 @@ const {
   readBody,
   logRequestHandler,
   handleApiRouter,
+
   guestBookRouter,
+
   registerUser,
-  protectionHandler
+  protectionHandler,
+  redirectToLogin,
+  redirectToRegister,
+
 } = require('./handlers/handlers.js')
 
-const fs = require('fs');
 
 const readData = (path) => {
   return fs.readFileSync(path, 'utf-8');
 };
 
 const createApp = (commentsPath, templatePath, usersPath, sessions) => {
-  const guestBook = JSON.parse(readData(commentsPath));
+  const comments = JSON.parse(readData(commentsPath));
   const template = readData(templatePath);
   const users = JSON.parse(readData(usersPath));
 
   const app = express();
+  const loginRouter = express.Router();
+  loginRouter.get('/', redirectToLogin)
+  loginRouter.post('/', loginHandler(sessions))
+  loginRouter.post('/', authenticate(users));
+
+  const signUpRouter = express.Router();
+  signUpRouter.get('/', redirectToRegister);
+  signUpRouter.post('/', registerUser(users, usersPath));
+
 
   app.use(express.urlencoded(
     { extended: true }
@@ -39,25 +53,22 @@ const createApp = (commentsPath, templatePath, usersPath, sessions) => {
   app.use(injectSession(sessions));
   app.use(logRequestHandler);
 
-  app.get('/register', registerUser(users, usersPath));
-  app.post('/register', registerUser(users, usersPath));
+  app.use('/register', signUpRouter)
 
-  app.get('/login', loginHandler(sessions))
-  app.post('/login', loginHandler(sessions))
-  app.post('/login', authenticate(users));
-
+  app.use('/login', loginRouter)
   app.get('/logout', logoutHandler(sessions));
+
 
   app.use(protectionHandler)
   app.use(express.static('public'));
 
-  app.get('/guest-book', guestBookRouter(guestBook, template, commentsPath));
-  app.post('/add-comment', guestBookRouter(guestBook, template, commentsPath));
+  app.get('/guest-book', guestBookRouter(comments, template, commentsPath));
+  app.post('/add-comment', guestBookRouter(comments, template, commentsPath));
 
-  app.get('/api/guest-book', handleApiRouter(guestBook));
+  app.get('/api/guest-book', handleApiRouter(comments));
 
-  app.get(uploadFileHandler);
-  app.post(uploadFileHandler);
+  app.get('/upload-file', uploadFileHandler);
+  app.post('/upload-file', uploadFileHandler);
 
   return app;
 }

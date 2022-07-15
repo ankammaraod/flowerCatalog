@@ -1,6 +1,6 @@
 const { fileNotFoundHandler } = require('./fileNotFoundHandler.js');
 const { guestBookRouter } = require('./handleGuestBook.js');
-const { loginHandler } = require('./loginHandler.js');
+const { loginHandler, redirectToLogin } = require('./loginHandler.js');
 const { logRequestHandler } = require('./logRequestHandler.js');
 const { handleApiRouter } = require('./handleApi.js');
 const { readBodyParams } = require('./readBodyParamsHandler.js');
@@ -9,7 +9,7 @@ const { injectSession } = require('./injectSessionHandler');
 const { uploadFileHandler } = require('./uploadFileHandler.js');
 const { readBody } = require('./parseBodyHandler.js');
 const { authenticate } = require('./authenticationHandler');
-const { registerUser } = require('./registerHandler.js');
+const { registerUser, redirectToRegister } = require('./registerHandler.js');
 const { logoutHandler } = require('./logoutHandler.js');
 const { protectionHandler } = require('./protectionHandler.js');
 
@@ -27,5 +27,7 @@ module.exports = {
   authenticate,
   registerUser,
   logoutHandler,
-  protectionHandler
+  protectionHandler,
+  redirectToLogin,
+  redirectToRegister
 }

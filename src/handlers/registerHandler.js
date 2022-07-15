@@ -19,26 +19,23 @@ const handleUsers = (response, username, users, usersPath) => {
 
 const registerUser = (users, usersPath) => {
   return (request, response, next) => {
-    const { method } = request;
 
-    if (method === 'POST') {
-      const { username } = request.bodyParams;
+    const { username } = request.bodyParams;
 
-      if (username) {
-        handleUsers(response, username, users, usersPath);
-        return;
-      }
-      response.end();
-    }
-
-    if (method === 'GET') {
-      response.redirect('/register.html');
-      response.end();
+    if (username) {
+      handleUsers(response, username, users, usersPath);
       return;
     }
-    next()
+    response.end();
   };
 
 };
 
-module.exports = { registerUser };
+
+const redirectToRegister = (request, response, next) => {
+  response.redirect('/register.html');
+  response.end();
+  return;
+}
+
+module.exports = { registerUser, redirectToRegister };
