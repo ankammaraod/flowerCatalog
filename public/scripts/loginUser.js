@@ -18,7 +18,7 @@ const loginUser = () => {
       formElement.reset();
     }
     if (xhr.status === 200) {
-      window.location = 'http://localhost:9090/flowerCatlog.html'
+      window.location = 'http://localhost:9090/index.html'
     }
   }
 

@@ -1,15 +1,14 @@
 const uploadFileHandler = (request, response, next) => {
-  const pathname = request.url;
   const { method } = request;
 
-  if (pathname === '/upload-file' && method === 'GET') {
+  if (method === 'GET') {
     response.statusCode = 302;
     response.setHeader('location', '/fileUpload.html')
     response.send();
     return;
   }
 
-  if (pathname === '/upload-file' && method === 'POST') {
+  if (method === 'POST') {
     console.log(request.body);
     response.send('files Uploaded');
     return;

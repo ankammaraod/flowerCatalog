@@ -13,6 +13,7 @@ const {
   handleApiRouter,
   guestBookRouter,
   registerUser,
+  protectionHandler
 } = require('./handlers/handlers.js')
 
 const fs = require('fs');
@@ -47,6 +48,7 @@ const createApp = (commentsPath, templatePath, usersPath, sessions) => {
 
   app.get('/logout', logoutHandler(sessions));
 
+  app.use(protectionHandler)
   app.use(express.static('public'));
 
   app.get('/guest-book', guestBookRouter(guestBook, template, commentsPath));
@@ -54,6 +56,7 @@ const createApp = (commentsPath, templatePath, usersPath, sessions) => {
 
   app.get('/api/guest-book', handleApiRouter(guestBook));
 
+  app.get(uploadFileHandler);
   app.post(uploadFileHandler);
 
   return app;

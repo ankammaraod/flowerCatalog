@@ -13,7 +13,6 @@ const registerUser = () => {
   const messageElement = document.querySelector('#message');
 
   const displayMessage = (xhr) => {
-    console.log(xhr.status);
     if (xhr.status === 201) {
       messageElement.innerHTML = "Registered successful..."
 

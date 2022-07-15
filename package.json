@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ankammaraod/flowerCatalog#readme",
   "dependencies": {
+    "express": "^4.18.1",
     "server": "github:ankammaraod/server"
   },
   "devDependencies": {

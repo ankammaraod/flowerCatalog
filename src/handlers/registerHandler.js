@@ -4,7 +4,6 @@ const writeData = (path, content) => {
 };
 
 const handleUsers = (response, username, users, usersPath) => {
-  console.log(users.includes(username))
   response.setHeader('content-type', 'text/plain');
 
   if (!users.includes(username)) {
@@ -20,20 +19,13 @@ const handleUsers = (response, username, users, usersPath) => {
 
 const registerUser = (users, usersPath) => {
   return (request, response, next) => {
-    const pathname = request.url;
     const { method } = request;
-
-    if (pathname !== '/register') {
-      next();
-      return;
-    }
 
     if (method === 'POST') {
       const { username } = request.bodyParams;
 
       if (username) {
-        handleUsers(response, username, users, usersPath)
-        console.log(users);
+        handleUsers(response, username, users, usersPath);
         return;
       }
       response.end();

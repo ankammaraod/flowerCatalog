@@ -31,7 +31,7 @@ describe('POST /login', () => {
       .post('/login')
       .send('username=ankammarao')
       .expect(302)
-      .expect('location', '/flowerCatlog.html', done);
+      .expect('location', '/index.html', done);
 
   });
   it('should not login an unregistered user', (done) => {
@@ -76,7 +76,7 @@ describe('Get /ankammrao', () => {
 
 
 describe('Get /', () => {
-  it('should server the /flowerCatlog', (done) => {
+  it('should server the index.html', (done) => {
     const { sessions, id } = createSession();
 
     request(app(sessions))
