@@ -135,7 +135,7 @@ describe('Post /file-upload', () => {
     const { sessions, id } = createSession();
 
     request(app(sessions))
-      .post('/fileUpload.html')
+      .post('/upload-file')
       .set('cookie', `id=${id}`)
       .field('username', 'ankammarao')
       .field('file', 'index.js')
