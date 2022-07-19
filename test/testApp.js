@@ -129,7 +129,6 @@ describe('Get /file-upload', () => {
   });
 });
 
-
 describe('Post /file-upload', () => {
   it('should give the response of file uploaded', (done) => {
     const { sessions, id } = createSession();

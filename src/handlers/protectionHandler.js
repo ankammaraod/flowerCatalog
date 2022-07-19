@@ -15,7 +15,7 @@ const protectionHandler = (request, response, next) => {
     return;
   }
 
-  if (!request.cookies.id || !request.session) {
+  if (!request.session.isPopulated) {
     redirectLogin(request, response, next);
     return;
   }

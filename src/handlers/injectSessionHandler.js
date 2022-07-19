@@ -1,6 +1,6 @@
 const injectSession = (sessions) => {
   return (request, response, next) => {
-    if (!request.cookies.id) {
+    if (!request.session.populated) {
       next();
       return;
     }

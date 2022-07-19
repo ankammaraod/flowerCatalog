@@ -1,10 +1,11 @@
 const express = require('express');
 const fs = require('fs');
+const morgan = require('morgan');
+const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
 
 const {
   authenticate,
-  injectSession,
-  injectCookie,
   loginHandler,
   logoutHandler,
   uploadFileHandler,
@@ -19,6 +20,7 @@ const {
   protectionHandler,
   redirectToLogin,
   redirectToRegister,
+  injectSession,
 
 } = require('./handlers/handlers.js')
 
@@ -29,8 +31,8 @@ const readData = (path) => {
 
 const createLoginRouter = (sessions, users) => {
   const loginRouter = express.Router();
-  loginRouter.get('/', redirectToLogin)
-  loginRouter.post('/', loginHandler(sessions))
+  loginRouter.get('/', redirectToLogin);
+  loginRouter.post('/', loginHandler(sessions));
   loginRouter.post('/', authenticate(users));
   return loginRouter;
 };
@@ -40,7 +42,7 @@ const createSignUpRouter = (users, usersPath) => {
   signUpRouter.get('/', redirectToRegister);
   signUpRouter.post('/', registerUser(users, usersPath));
   return signUpRouter;
-}
+};
 
 
 const createApp = (commentsPath, templatePath, usersPath, sessions) => {
@@ -58,19 +60,27 @@ const createApp = (commentsPath, templatePath, usersPath, sessions) => {
     { extended: true }
   ));
 
-  const middleWare = [
-    readBodyParams, readBody, injectCookie,
-    injectSession(sessions), logRequestHandler
-  ];
+  app.use(cookieParser());
 
-  app.use(middleWare);
+  app.use(readBodyParams)
+  app.use(readBody)
 
-  app.use('/register', signUpRouter)
+  app.use(cookieSession({
+    name: 'session',
+    keys: ['someKey']
+  }));
 
-  app.use('/login', loginRouter)
 
-  app.get('/logout', logoutHandler(sessions));
+  app.use(morgan('tiny', { stream: fs.createWriteStream('./log.txt') }))
 
+  app.use('/register', signUpRouter);
+
+
+  app.get('/login', redirectToLogin);
+  app.post('/login', loginHandler());
+  app.post('/login', authenticate(users));
+
+  app.get('/logout', logoutHandler());
 
   app.use(protectionHandler);
 

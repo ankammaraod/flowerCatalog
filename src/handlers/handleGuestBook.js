@@ -79,6 +79,8 @@ const guestBookRouter = (guestBook, template, commentsPath) => {
 
 const serveGuestBook = (guestBook, template) => {
   return (request, response, next) => {
+    console.log('--------', request.session);
+    request.session.index++;
     request.guestBook = guestBook;
     request.template = template;
     return handleDisplayComments(request, response);
