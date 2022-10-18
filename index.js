@@ -1,5 +1,5 @@
 const { app } = require('./src/app.js');
 
 const startApp = app();
-
-startApp.listen(9090, () => console.log('listening port no 9090'));
+const PORT = 8080;
+startApp.listen(PORT, () => console.log(`listening port no ${PORT}`));
